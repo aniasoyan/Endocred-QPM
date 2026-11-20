@@ -10,6 +10,9 @@
 % Licensed under the GNU Affero General Public License v3.0.
 % See the LICENSE file or https://www.gnu.org/licenses/agpl-3.0.html
 
+// Endocred for Armenia with 2-country model's specifications
+// Quarterly frequency
+
 // =0 runs nonlinear convex Phillips curve
 // To switch to the linear Phillips curve, set nonlinearPC=1 or anything else except 0
 @#define nonlinearPC=0
@@ -22,12 +25,15 @@
 // This Block defines endogenous variables of the model
 //    Dynare Notation         Latex Notation                   Explaination of the Defined Variables
 var     
-      PIE_NTSPI               ${\pi^{ntspi}$                   (long_name = 'QoQ Annualized Sticky Inflation')   
+      PIE_NTSPI               ${\pi^{ntspi}$                   (long_name = 'QoQ Annualized NTSP Inflation')   
       PIE_REG                 ${\pi^{reg}}$                    (long_name = 'QoQ Annualized Regulated Services Inflation')
       PIE_FLEX                ${\pi^{flex}}$                   (long_name = 'Qoq Annualized Flexible Inflation')
       PIE_HEADLINE            ${\pi^{CPI}}$                    (long_name = 'QoQ Annualized Headline Inflation')
-      PIE4_NTSPI              ${\pi4^{ntspi}$                  (long_name = 'Moving Average of 4 Quarters QoQ NTSPI')    
-      PIE4_HEADLINE           ${\pi4^{CPI}}$                   (long_name = 'Moving Average of 4 Quarters QoQ Headline Inflation')
+      PIE4_NTSPI              ${\pi4^{ntspi}}$                 (long_name = 'YoY NTSP Inflation')   
+      PIE4_REG                ${\pi4^{reg}}$                   (long_name = 'YoY Regulated Services Inflation')
+      PIE4_FLEX               ${\pi4^{flex}}$                  (long_name = 'YoY Flexible Inflation')
+      PIE4_HEADLINE           ${\pi4^{CPI}}$                   (long_name = 'YoY Headline Inflation')
+
       PIE_imp                 ${\pi^{imp}}$                    (long_name = 'Imported Inflation')
       PIE_food_imp            ${\pi^{food-imp}}$               (long_name = 'Imported Food Inflation')
       PIE_oil_imp             ${\pi^{oil-imp}}$                (long_name = 'Imported Oil Inflation')
@@ -38,7 +44,7 @@ var
       RMC_REG                 ${\RMC^{reg}}$                   (long_name = 'Real Marginal Cost of Regulated Services Inflation')
       RMC_FLEX                ${\RMC^{flex}}$                  (long_name = 'Real Marginal Cost of Flexible Inflation')
       P_NTSPI                 $P^{ntspi}$                      (long_name = 'Non Traded Sticky Price Level')
-      P
+      P                       $P^{CPI}$                        (long_name = 'CPI price index')
       P_REG                   $P^{reg}$                        (long_name = 'Regulative Services Price Level')
       P_FLEX                  $P^{flex}$                       (long_name = 'Flexible Price Level')
       P_food_imp              ${P^{food-imp}}$                 (long_name = 'Imported Food Prices')
@@ -66,7 +72,6 @@ var
       PFfood                  $PF^{food}$                      (long_name = 'Price of Food')
       EPS_PIE_NTSPI           ${EPS^{\pi}}$                    (long_name = 'Serially Correlated Sticky Inflation Shock')
       PIE_NTSPI_EXP           ${\pi^{exp}}$                    (long_name = 'Non traded Sticky Price Inflation Expectations')   
-      P_HEADLINE              $P^{CPI}$                        (long_name = 'Headline CPI')
       PIE_DEV_TAR             ${\varepsilon^{TAR}}$            (long_name = 'Deviation of Inflation from Optimistic Expectations')
       PIE_DEV_HIGH            ${\varepsilon^{HIGH}}$           (long_name = 'Deviation of Inflation from Expectations Towards High Inflation Regime')
       PIE_DEV_LOW             ${\varepsilon^{LOW}}$            (long_name = 'Deviation of Inflation from Expectations Towards Low Inflation Trap')
@@ -161,8 +166,6 @@ var
       S_exp                   $S^e$                            (long_name = 'Expected Nominal Exchange Rate')
       S_PRT                   $S^{prt}$                        (long_name = 'Nominal Exchange Rate, partners')
       dS_PRT                  $\Delta{S}^{prt}$                (long_name = 'Nominal Exchange Rate change, partners')
-PIE4_FLEX
-PIE4_REG
 ;   
 
 
@@ -349,19 +352,19 @@ parameters
       dS_SS                   $\Delta S^{ss}$                  (long_name = 'Steady State Value for Exchange rate depreciation')
 ;
 
-// *** - is changed to match the latest qpm developments
+
 // This Block calibrates the parameters 
 
-      n_alpha1                = 0.25; //65;   // qpm=0.65, endoqpm_org=0.45
-      n_alpha2                = 0.28; //35;       // qpm=0.3, endoqpm_org=0.35
+      n_alpha1                = 0.65;   // qpm=0.65, endoqpm_org=0.45
+      n_alpha2                = 0.35;       // qpm=0.3, endoqpm_org=0.35
       n_alpha3                = 0.6;        // qpm=0.9, endoqpm=0.4, RPgap coefficient is 0.1 in qpm      
       r_alpha1                = 1;          // old qpm
       r_alpha2                = 1.5;        // old qpm
       f_alpha1                = 0.5;        // qpm=0.3 : 0.5, endoqpm_org=0.4
       f_alpha2                = 0.2;        // qpm=0.2, endoqpm_org= 0.3 or 0.6
-      f_alpha3                = 0.028;    // old qpm /1000, in endoqpm_org can be *100
-      f_alpha4                = 0.012;    // old qpm /1000
-      f_alpha5                = 0.01;     // old qpm /1000
+      f_alpha3                = 0.028; //0.00028;    // old qpm /1000, in endoqpm_org can be *100
+      f_alpha4                = 0.012; //0.00012;    // old qpm /1000
+      f_alpha5                = 0.01; //0.00001;     // old qpm /1000
       f_alpha6                = 0.24;       // qpm=0.24, endoqpm_org=1.14
       f_alpha7                = 0.8;        // qpm=0.2, endoqpm_org=0.5
       f_alpha8                = 0.03;       // qpm=0.5, new=0.05
@@ -378,13 +381,13 @@ parameters
       w_ntspi                 = 0.1718;
       w_reg                   = 0.13;
     
-      dZ_PRT_SS               = 0.1;  // ***0.13;
+      dZ_PRT_SS               = 0.13; // ***0.1;
       PIE_PRT_SS              = 4;
       dRP_REG_SS              = 0;
       dRP_FLEX_SS             = 0;
       d_qoil_ss               = 0;
       d_qfood_ss              = 0.5;
-      EXCH_TREND_SS           = -2; // ***-0.4557 ;     // endoqpm=-0.4, new=-0.4557
+      EXCH_TREND_SS           = -0.4557; // ***-2 ;     // endoqpm=-0.4, new=-0.4557
 
       gamma_1                 = 0.5;
       gamma_2                 = 0.5;
@@ -393,11 +396,11 @@ parameters
       gamma_5                 = 0.5;
       gamma_6                 = 0.5;
 
-      delta                   = 0.92;
-      delta_1                 = 0.5;
+      delta                   = 0.8;
+      delta_1                 = 0.9;
       delta_2                 = 0.9;
       delta_3                 = 0.9;
-      delta_4                 = 0.7;        // qpm=0.99
+      delta_4                 = 0.9;        // qpm=0.99
 
       PIEDOUBLESTAR           = 3;
       PIE_HIGH                = 7;
@@ -410,14 +413,14 @@ parameters
 
       lambda_1                = 0.12;       // new qpm ;
       lambda_2                = 0.7;        // new qpm
-      lambda_3                = 0.05; //0.18;       // changed from 0.18 to 0.13 in new qpm
+      lambda_3                = 0.18;       // changed from 0.18 to 0.13 in new qpm
       lambda_4                = 0.15;       // changed from 0.07 to 0.109 in new qpm, 0.15 is in endoqpm_org
       lambda_5                = 0.12;
 
       theta_1                 = 0.8;        // qpm=1 
       theta_2                 = 0.8;        // qpm=0.95
       GROWTH_SS               = 5;          // qpm=5.5 
-      UNR_BAR_SS              = 14;         // is in only endocred
+      UNR_BAR_SS              = 13;         // is in only endocred
       theta_3                 = 0.8;        // is in only endocred
       theta_4                 = 0.15;       // is in only endocred
       theta_5                 = 0.05;       // is in only endocred
@@ -437,7 +440,7 @@ parameters
       RHO_TERM10Y             = 0.90;
 
       RR_BAR_STAR_US          = 1.5;
-      PREM_BAR_STAR           = 3.7; // ***4;          //4.5 RS_BAR_STAR - RS_BAR_STAR_US
+      PREM_BAR_STAR           = 4 ; // ***3.7;          //4.5 RS_BAR_STAR - RS_BAR_STAR_US
       rho_EFFR_BAR            = 0.5;        //in qpm=0.95 and is RR_BAR's persistence
 
       rho_1                   = 0.85;
@@ -445,14 +448,14 @@ parameters
       rho_3                   = 0.86;
       rho_4                   = 0.95;       
       rho                     = 1;
-      rho_5                   = 0.7;         //qpm=0.5, 0.7 
+      rho_5                   = 0.7;        //qpm=0.5, 0.7 
       rho_6                   = 0.9;         //qpm=0.85 
-      rho_7                   = 0.2;        //0.1;
+      rho_7                   = 0.05;        //0.01;
       rho_8                   = 0.9;         //endoqpm_org=0.9, qpm=0.7 
-      rho_9                   = 0.45;        //qpm=0.7 
-      rho_10                  = 1.2; //1; 
+      rho_9                   = 0.9;         //0.45;  //qpm=0.7 
+      rho_10                  = 0.1;         //1.2; //1; 
 
-      PIE_STAR_US             = 2;      // ***2.4;        //2 previously, 2.4 new
+      PIE_STAR_US             = 2.4;      // ***2;        //2 previously, 2.4 new
       trade_AM_US             = 0.0525;
       dZ_US_t_SS              = EXCH_TREND_SS+(1-trade_AM_US)*dZ_PRT_SS;  //-0.2768
       sigma_min               = 0.3;        //0.5 in new qpm, 0.3 is in endoqpm_org;
@@ -489,39 +492,31 @@ RMC_NTSPI   =
 @#endif
            + (1-n_alpha3)*(RP_FLEX_g)  ; 
 
-[name = '3. 4-Quarter MA Sticky Inflation rate']
-//PIE4_NTSPI     =  0.25*(PIE_NTSPI+PIE_NTSPI(-1)+PIE_NTSPI(-2)+PIE_NTSPI(-3));
-P_NTSPI = P_NTSPI (-4) + PIE4_NTSPI - PIEDOUBLESTAR;
-
-[name = '4. AR(1) Process for Sticky Inflation Shock']
+[name = '3. AR(1) Process for Sticky Inflation Shock']
 EPS_PIE_NTSPI = gamma_1*EPS_PIE_NTSPI(-1) + E_EPS_PIE_NTSPI;
 
-[name = '5. Regulated Services Phillips Curve']
+[name = '4. Regulated Services Phillips Curve']
 PIE_REG = r_alpha1* PIE_STAR + r_alpha2* RMC_REG + E_PIE_REG;
 
-[name = '6. Real Marginal Cost of Regulated Services']
+[name = '5. Real Marginal Cost of Regulated Services']
 RMC_REG = -RP_REG_g(-1);
 
-[name = '7. Flexible Inflation Phillips Curve']
+[name = '6. Flexible Inflation Phillips Curve']
 PIE_FLEX = f_alpha1 * PIE_FLEX(-1) + (1-f_alpha1-f_alpha3-f_alpha4-f_alpha5)*(PIE_NTSPI_EXP + (PIEDOUBLESTAR-1)*PIE_STAR)/PIEDOUBLESTAR + f_alpha2*RMC_FLEX + f_alpha3* PIE_imp + f_alpha4*PIE_food_imp + f_alpha5* PIE_oil_imp +  E_PIE_FLEX;
 
-[name = '14. 4-Quarter MA Flexible inflation']
-//PIE4_FLEX = 0.25*(PIE_FLEX + PIE_FLEX(-1) + PIE_FLEX(-2) + PIE_FLEX(-3));
-P_FLEX = P_FLEX(-4) + PIE4_FLEX - PIEDOUBLESTAR; 
-
-[name = '8.Imported Food Price']
+[name = '7.Imported Food Price']
 P_food_imp = PFfood + S - qfood_t - Z_US_t;
 
-[name = '9.Imported Food Inflation']
+[name = '8.Imported Food Inflation']
 PIE_food_imp = (P_food_imp - P_food_imp(-1))*4 +PIEDOUBLESTAR ;
 
-[name = '10.Imported Oil Price']
+[name = '9.Imported Oil Price']
 P_oil_imp = PFoil+S-qoil_t-Z_US_t;
 
-[name = '11.Imported Oil Inflation']
+[name = '10.Imported Oil Inflation']
 PIE_oil_imp = (P_oil_imp - P_oil_imp(-1))*4 + PIEDOUBLESTAR;
 
-[nema = '12. Real Marginal Cost of Flexible prices']
+[nema = '11. Real Marginal Cost of Flexible prices']
 RMC_FLEX = - f_alpha6 * RP_FLEX_g(-1) + 
 @#if nonlinearPC==0
            f_alpha7*(6*Y/(6-Y)) + 
@@ -530,33 +525,40 @@ RMC_FLEX = - f_alpha6 * RP_FLEX_g(-1) +
 @#endif
            + f_alpha8* Z_US_g(-1) + f_alpha9*(dZ-EXCH_TREND_SS)  +   f_alpha10*qoil_g + f_alpha11* qfood_g; //  (dS-(dZ-(PIE_F_SS - PIE_STAR)))
 
-[name = '13. QoQ Headline Inflation']
+[name = '12. Q-o-Q Headline Inflation']
 PIE_HEADLINE = w_ntspi*PIE_NTSPI + w_reg*PIE_REG + (1 - w_ntspi - w_reg)* PIE_FLEX ;
 
-[name = '14. 4-Quarter MA Headline inflation']
+[name = '13. Sticky Price Index']
+P_NTSPI = P_NTSPI(-1) + PIE_NTSPI/4 - PIEDOUBLESTAR/4  ;
+
+[name = '14. Regulative Services Price Index']
+P_REG = P_REG(-1) + PIE_REG/4 - PIEDOUBLESTAR/4;
+
+[name = '15. Flexible Price Index']
+P_FLEX = P_FLEX(-1) + PIE_FLEX/4 - PIEDOUBLESTAR/4;
+
+[name = '16. CPI Price Index']
+P = P(-1) + PIE_HEADLINE/4 - PIEDOUBLESTAR/4;
+
+[name = '17. Y-o-Y Sticky Inflation rate']
+//PIE4_NTSPI     =  0.25*(PIE_NTSPI+PIE_NTSPI(-1)+PIE_NTSPI(-2)+PIE_NTSPI(-3));
+P_NTSPI = P_NTSPI (-4) + PIE4_NTSPI - PIEDOUBLESTAR;
+
+[name = '18. Y-o-Y Regulated Services Inflation']
+P_REG = P_REG(-4) + PIE4_REG- PIEDOUBLESTAR;
+
+[name = '18. Y-o-Y Flexible inflation']
+//PIE4_FLEX = 0.25*(PIE_FLEX + PIE_FLEX(-1) + PIE_FLEX(-2) + PIE_FLEX(-3));
+P_FLEX = P_FLEX(-4) + PIE4_FLEX - PIEDOUBLESTAR; 
+
+[name = '19. Y-o-Y Headline inflation']
 //PIE4_HEADLINE = 0.25*(PIE_HEADLINE + PIE_HEADLINE(-1) + PIE_HEADLINE(-2) + PIE_HEADLINE(-3));
 P = P(-4) + PIE4_HEADLINE - PIEDOUBLESTAR;
 
-P = P(-1) + PIE_HEADLINE/4 - PIEDOUBLESTAR/4;
-
-[name = '15. Sticky Price Level']
-P_NTSPI = P_NTSPI(-1) + PIE_NTSPI/4 - PIEDOUBLESTAR/4  ;
-
-[name = '16. Flexible Price level']
-P_FLEX = P_FLEX(-1) + PIE_FLEX/4 - PIEDOUBLESTAR/4;
-
-[name = '17. Regulative Services Price level']
-P_REG = P_REG(-1) + PIE_REG/4 - PIEDOUBLESTAR/4;
-
-P_REG = P_REG(-4) + PIE4_REG- PIEDOUBLESTAR;
-
-[name = '18.Headline CPI']
-P_HEADLINE = P_HEADLINE(-1) + PIE_HEADLINE/4 - PIEDOUBLESTAR/4;
-
-[name = '19. Relative Price of Regulative Services']
+[name = '20. Relative Price of Regulative Services']
 RP_REG      = P_REG - P_NTSPI;
 
-[name = '20. Relative Flexible Price']
+[name = '21. Relative Flexible Price']
 RP_FLEX     = P_FLEX - P_NTSPI;
 
 [name = '22. Regulative services relative price gap']
@@ -626,7 +628,7 @@ P_HIGH = (PIE_DEV_TAR > 0) * (PIE_DEV_TAR^2 / (PIE_DEV_TAR^2 + PIE_DEV_HIGH^2)) 
 P_LOW = (PIE_DEV_LOW < 0) * (PIE_DEV_TAR^2 / (PIE_DEV_TAR^2 + PIE_DEV_LOW^2)) + (PIE_DEV_TAR >= 0) * 0;
 
 [name = '46. Flow of Credibility']
-C_FLOW =  1- P_LOW - P_HIGH; 
+C_FLOW =  1- 0.3*P_LOW - 0.3*P_HIGH; 
 
 [name = '47. Formation of Credibility']
 C = delta*C(-1) + (1-delta)*C_FLOW + EPS_C + E_C;
@@ -703,7 +705,9 @@ EFF_RR_g = EFF_RR - EFF_RR_BAR;
 EFF_RR_BAR = rho_EFFR_BAR* EFF_RR_BAR(-1) + (1-rho_EFFR_BAR)*EFF_RR_BAR_STAR + E_EFF_RR_BAR;
 
 [name = '67. Dollarization Parameter']
-sigma = sigma_min + (1-sigma_min-DOLL)*(1-C);
+//sigma = sigma_min + (1-sigma_min-DOLL)*(1-C);
+sigma = 0.9*sigma(-1) + (1-0.9)*sigma_min - 0.35*(0.9*min(C - C(-1), 0)+0.1*(C-C(-1)));
+
 
 [name = '74. US 6-Month Term Premium Equation']
 TERM6M = RHO_TERM6M*TERM6M(-1) + (1-RHO_TERM6M)*TERM6M_SS  + 0.3*E_TERM + E_TERM6M;
@@ -810,7 +814,7 @@ S = S(-1) + (dS-dS_SS)/4 ;
 PIE_imp = (PIE_F) + (dS )- (dZ_t );  
 
 [name = '124.Real effective exchange rate level']
-Z = S + P_F - P_HEADLINE ;
+Z = S + P_F - P ;
 
 [name = '125.Change in Real effective exchange rate'] 
 Z = Z(-1)  + (dZ-EXCH_TREND_SS)/4  ;
@@ -980,9 +984,9 @@ steady_state_model;
     PIE_oil_imp         =   PIEDOUBLESTAR;  
     PIE_imp             =   PIEDOUBLESTAR;  
     PIE_FLEX            =   PIEDOUBLESTAR;  
+    PIE4_FLEX           =   PIE_FLEX;
     PIE_HEADLINE        =   w_ntspi*PIE_NTSPI + w_reg*PIE_REG + (1 - w_ntspi - w_reg)* PIE_FLEX ;
     PIE4_HEADLINE       =   PIE_HEADLINE;
-    PIE4_FLEX           =   PIE_FLEX;
 
     qoil_g              =   0;
     d_qoil_t            =   d_qoil_ss;
@@ -1083,223 +1087,113 @@ steady_state_model;
 end;
 
 //planner_objective 0.5*PIE_GAP^2 + 0.1*Y^2 + 2*DRS^2 ; 
-planner_objective 0.34*PIE_GAP^2 + 0.15*Y^2 + 0.9*DRS^2 ; 
+planner_objective 2*PIE_GAP^2 + 0.5*Y^2 + 0.7*DRS^2 ; 
 
 ramsey_model(planner_discount = 0.95, instruments=(RS));
 
-//initval;
- // RS = RS_SS; 
-//end;
-
-steady;
-
-// 0 = 2026Q1
-histval;
-
-PIE_FLEX(0) =  6.8; //             3; //1.13; //3;
-//PIE_FLEX(-1) = 1.7;
-//PIE_FLEX(-2) = 3.7;
-//PIE_FLEX(-3) =8.1;
-
-PIE4_FLEX(0) =  5.1; //            3; //3.95; //3;
-//PIE4_FLEX(-1) = 3.8;
-//PIE4_FLEX(-2) = 4;
-//PIE4_FLEX(-3) = 4.48;
-
-PIE_NTSPI(0) =  5.7; //            3; //1.59; //3;
-//PIE_NTSPI(-1) = 2.6;
-//PIE_NTSPI(-2) = 1.6;
-//PIE_NTSPI(-3) = 1.46;
-
-PIE4_NTSPI(0) =  2.87; 
-//PIE4_NTSPI(-1) =  2.06; 
-//PIE4_NTSPI(-2) =  2.1; 
-//PIE4_NTSPI(-3) =  2.28; 
-
-PIE_HEADLINE(0) =  6.2; //          3; // 5.65;
-//PIE_HEADLINE(-1) = 1.7;
-//PIE_HEADLINE(-2) = 3.2;
-//PIE_HEADLINE(-3) = 5.4;
-
-PIE4_HEADLINE(0) =  4.2;
-//PIE4_HEADLINE(-1) =  3.27;
-//PIE4_HEADLINE(-2) =  3.5;
-//PIE4_HEADLINE(-3) =  3.78;
-
-PIE_REG(0) = 3.6;
-//PIE_REG(-1) = 0.09;
-//PIE_REG(-2) = 2.3;
-//PIE_REG(-3) = -3.4;
-
-PIE4_REG(0) = 0.6;
-//PIE4_REG(-1) = 1.89;
-//PIE4_REG(-2) = 2.25;
-//PIE4_REG(-3) = 1.94;
-
-
-
-PIE_imp(0) = 3;
-PIE_food_imp(0) = 3;
-PIE_oil_imp(0) = 3;
-PIE_NTSPI_EXP(0) = 3;
-RP_REG_t(0) = dRP_REG_SS;
-gRP_REG_t(0) = dRP_REG_SS;
-RP_REG_g(0) = 0;
-RP_FLEX_t(0) = dRP_FLEX_SS;
-gRP_FLEX_t(0) = dRP_FLEX_SS;
-RP_FLEX_g(0) = 0;
-d_qoil_t(0)= d_qoil_ss;
-qoil_g(0) = 0;
-d_qfood_t(0) =d_qfood_ss; 
-qfood_g (0) =   0;   
-EPS_PIE_NTSPI(0) = 0;
-C(0) =                      1; //0.85; //1;
-EPS_PIE_NTSPI_EXP(0) = 0;
-EPS_C(0) = 0;
-PIE_STAR(0) = 3;
-Y(0) =                   0.5; //0.4; //0;
-Y(-1) = 0;
-Y(-2) = 0;
-EPS_Y(0) = 0;
-DL_GDP_BAR(0) = GROWTH_SS;
-G_GDP_BAR(0) = GROWTH_SS;
-UNR_GAP(0) = 0;
-G_UNR(0) = 0;
-EPS_UNR_BAR(0) = 0;
-RS(0)=6.71; //RS_SS;
-TERM6M(0) = TERM6M_SS;
-TERM1Y(0) = TERM1Y_SS;
-TERM2Y(0) = TERM2Y_SS;
-TERM3Y(0) = TERM3Y_SS;
-TERM5Y(0) = TERM5Y_SS;
-TERM10Y(0) = TERM10Y_SS;
-RR_BAR(0) = RR_BAR_STAR;
-EFF_RR_BAR(0) = EFF_RR_BAR_STAR;
-sigma(0) = sigma_min;
-EPS_RS(0) = 0;
-P_GAP(0) = 0;
-PREM(0) =                      PREM_BAR_STAR; //  3; //PREM_BAR_STAR;
-RR_US(0) = RR_BAR_US;
-RS_US(0) =                     RS_US_SS; // 6.71; //RS_US_SS;
-PREM_BAR(0) = PREM_BAR_STAR;
-FX_PREM(0) =                    0; //-2; //0;
-PIE_US(0) = PIE_STAR_US;
-dZ_t(0) =                       EXCH_TREND_SS; //-1.8; //EXCH_TREND_SS;
-Z_US_g(0)= 0;
-Z_g(0) =                       0; // 6.24; //0;
-dZ_US(0)= dZ_US_t;
-Z_PRT_g(0) = 0;
-dZ_PRT_t(0)=   dZ_PRT_SS;
-dZ(0) =                         EXCH_TREND_SS; //-1.42; //EXCH_TREND_SS;
-EFF_LR_BAR(0) = EFF_RR_BAR_STAR;
-EFF_LR(0) =EFF_RR_BAR_STAR;
-
+initval;
+  RS = RS_SS; 
 end;
 
+
+
+
+steady;
+resid;
+//steady(solve_algo=0, nocheck);
+check;
+//model_diagnostics;
+
+
 shocks; 
-var E_Y;
-periods 0 1 2;
-values 0.6 0.9 0.8;
 
-var E_PIE_FLEX;
-periods 0 1 2 3 ;
-values 4.5 3.4 2.3 -0.7; 
-
-//var E_PIE_FLEX;
-//periods 1, 2, 3  ;
-//values 0.7 0.6 0.2; 
-//values 4.01 0.01 0; 
-
-
-//var E_FX_PREM;
-//periods 1, 2, 3 ,4,5 ;
-//values -1.5, -1.4, -1.3, -1.2, -1.1; 
-
+  var E_PIE_NTSPI;
+  periods 1;
+  values  2;
 
 end; 
-
-model_info;
 
 ramsey_constraints;
   RS > 0.1;
 end;
+  
+
 
 perfect_foresight_setup(periods=150);
+perfect_foresight_solver(lmmcp);
 
-perfect_foresight_solver(lmmcp, no_homotopy);
-
-dark_blue = "#00163B";
-gold      = "#D39C1F";
 
 figure(1)
 subplot(3,4,1)
-plot(PIE_HEADLINE(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
+plot(PIE_HEADLINE(1:52), 'b', 'LineWidth', 1.5)
 hold on
-plot(PIE4_HEADLINE(1:52), 'Color', gold, 'LineWidth', 1.5, 'LineStyle', '--')
-yline(3.0, '--', 'Target = 3%', 'Color', [0.67 0.73 0.8]);
-legend('QoQ Ann.', 'YoY', 'Location', 'best')
+plot(PIE4_HEADLINE(1:52), 'r', 'LineWidth', 1.5)
+yline(3.0, '--', 'Target = 3.0%');
+legend('QoQ Ann CPI Inflation','YoY CPI Inflation','Target')
 title('CPI Inflation')
 
 subplot(3,4,2)
-plot(PIE_NTSPI(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
+plot(PIE_NTSPI(1:52), 'b', 'LineWidth', 1.5)
 hold on
-plot(PIE4_NTSPI(1:52), 'Color', gold, 'LineWidth', 1.5, 'LineStyle', '--')
-yline(3.0, '--', 'Target = 3%', 'Color', [0.67 0.73 0.8]);
-legend('QoQ Ann.', 'YoY', 'Location', 'best')
+plot(PIE4_NTSPI(1:52), 'r', 'LineWidth', 1.5)
+yline(3.0, '--', 'Target = 3.0%');
+legend('QoQ Ann NTSP Inflation','YoY NTSP Inflation','Target')
 title('NTSPI Inflation')
 
 subplot(3,4,3)
-plot(PIE_FLEX(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
+plot(PIE_FLEX(1:52), 'b', 'LineWidth', 1.5)
 hold on
-plot(PIE4_FLEX(1:52), 'Color', gold, 'LineWidth', 1.5, 'LineStyle', '--')
-yline(3.0, '--', 'Target = 3%', 'Color', [0.67 0.73 0.8]);
-legend('QoQ Ann.', 'YoY', 'Location', 'best')
+plot(PIE4_FLEX(1:52), 'r', 'LineWidth', 1.5)
+yline(3.0, '--', 'Target = 3.0%');
+legend('QoQ Ann FLEX Inflation','YoY FLEX Inflation','Target')
 title('Flexible Inflation')
 
+
 subplot(3,4,4)
-plot(PIE_REG(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
+plot(PIE_REG(1:52), 'b', 'LineWidth', 1.5)
 hold on
-plot(PIE4_REG(1:52), 'Color', gold, 'LineWidth', 1.5, 'LineStyle', '--')
-yline(3.0, '--', 'Target = 3%', 'Color', [0.67 0.73 0.8]);
-legend('QoQ Ann.', 'YoY', 'Location', 'best')
-title('Regulated Services Inflation')
+plot(PIE4_REG(1:52), 'r', 'LineWidth', 1.5)
+yline(3.0, '--', 'Target = 3.0%');
+legend('QoQ Ann Regulated Services Inflation','YoY Regulated Services Inflation','Target')
+title('Flexible Inflation')
 
 subplot(3,4,5)
-plot(Z_g(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
-title('Real Exchange Rate Gap')
+plot(Z_g(1:52), 'b', 'LineWidth', 1.5)
+title('RER gap')
 
 subplot(3,4,6)
-plot(dZ(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
-title('RER Depreciation')
+plot(dZ(1:52), 'b', 'LineWidth', 1.5)
+yline(0, '--',"");
+title('RER depreciation')
 
 subplot(3,4,7)
-plot(PREM(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
+plot(PREM(1:52), 'b', 'LineWidth', 1.5)
 hold on
-plot(FX_PREM(1:52), 'Color', gold, 'LineWidth', 1.5, 'LineStyle', '--')
-legend('Country risk premium', 'FX premium', 'Location', 'best')
-title('Risk Premia')
+plot(FX_PREM(1:52), 'r', 'LineWidth', 1.5)
+title('PREMIA (blue) and fxPREM (red)')
 
 subplot(3,4,8)
-plot(C(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
+plot(C(1:52), 'b', 'LineWidth', 1.5)
 title('Credibility Index')
 
 subplot(3,4,9)
-plot(RS(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
-title('Nominal Policy Rate')
+plot(RS(1:52), 'b', 'LineWidth', 1.5)
+yline(6.3, '--', 'Neutral = 6.3%');
+title('Nominal Interest Rate')
 
 subplot(3,4,10)
-plot(EFF_LR_BAR(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
-title('LR Real Effective Rate Trend')
+plot(EFF_LR_BAR(1:52), 'b', 'LineWidth', 1.5)
+yline(6.3, '--', 'Neutral = 6.3%');
+title('Long Run Real Effective Interest Rate Trend')
 
 subplot(3,4,11)
-plot(Y(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
-title('Output Gap')
+plot(Y(1:52), 'b', 'LineWidth', 1.5)
+title('output gap')
 
 subplot(3,4,12)
-plot(sigma(1:52), 'Color', dark_blue, 'LineWidth', 1.5)
-yline(0.3, '--', 'Optimal level', 'Color', [0.67 0.73 0.8]);
+plot(sigma(1:52), 'b', 'LineWidth', 1.5)
+yline(0.3, '--', 'Optimal = 0.3%');
 title('Dollarization')
-
 
 figure(2)
 sgtitle('Flexible RMC components')
@@ -1363,4 +1257,4 @@ T = array2table(sim_data_T, 'VariableNames', matlab.lang.makeValidName(var_names
 T.Time = (1:size(sim_data_T, 1))';
 T = movevars(T, 'Time', 'Before', 1);
 
-writetable(T, '/Users/ani/Desktop/Endocred_final/csvs/endo_nonlinear_loss_LR_histval.csv');
+writetable(T, '/Users/ani/Desktop/Endocred_final/csvs/endo_nonlinear_loss_LR_E_PIE_NTSPI_2.csv');
