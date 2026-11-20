@@ -1,8 +1,14 @@
 % EndoCred QPM for Armenia
-% Originally developed by Ani Asoyan
+%
 % Copyright (C) 2026 Ani Asoyan
-% Licensed under the GNU Affero General Public License v3.0
-% https://www.gnu.org/licenses/agpl-3.0.html
+%
+% Developed by Ani Asoyan as a modeling project during the author's
+% time at the Central Bank of Armenia (CBA). The views and modeling
+% choices expressed here are the author's own and do not necessarily
+% reflect the official position of the CBA.
+%
+% Licensed under the GNU Affero General Public License v3.0.
+% See the LICENSE file or https://www.gnu.org/licenses/agpl-3.0.html
 
 // =0 runs nonlinear convex Phillips curve
 // To switch to the linear Phillips curve, set nonlinearPC=1 or anything else except 0
